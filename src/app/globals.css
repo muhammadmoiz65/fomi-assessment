@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Fomi — design tokens
+   Warm, soft, "studio" palette taken from the mockup:
+   cream canvas, blush surfaces, coral primary action.
+   Light is the default (matches the mockup); dark mirrors it
+   for the moon toggle shown in the mockup's top bar.
+   ============================================================ */
+
+:root {
+  /* surfaces */
+  --canvas: #faf4f0;
+  --surface: #ffffff;
+  --surface-soft: #fdeee8;
+  --surface-sunken: #f5e9e2;
+  --surface-raised: #ffffff;
+
+  /* lines */
+  --border: #efe0d8;
+  --border-strong: #e5d0c6;
+
+  /* text */
+  --text: #2b2622;
+  --text-muted: #8a7b72;
+  --text-subtle: #b4a69d;
+
+  /* brand / action */
+  --accent: #ec7e66;
+  --accent-hover: #e56a4e;
+  --accent-press: #d65c41;
+  --accent-soft: #fbe2da;
+  --accent-contrast: #ffffff;
+
+  /* feedback */
+  --ring: rgba(236, 126, 102, 0.4);
+  --shadow-color: 25deg 30% 60%;
+
+  --radius: 1rem;
+  --header-h: 60px;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #141110;
+  --surface: #1e1a18;
+  --surface-soft: #241d1a;
+  --surface-sunken: #110e0d;
+  --surface-raised: #272019;
+
+  --border: #342a25;
+  --border-strong: #453830;
+
+  --text: #f3eae4;
+  --text-muted: #a89a90;
+  --text-subtle: #776b63;
+
+  --accent: #f08a72;
+  --accent-hover: #f6a08b;
+  --accent-press: #e5765c;
+  --accent-soft: #3a2621;
+  --accent-contrast: #1a1210;
+
+  --ring: rgba(240, 138, 114, 0.45);
+  --shadow-color: 20deg 20% 3%;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-raised: var(--surface-raised);
+
+  --color-border-soft: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-press: var(--accent-press);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  color-scheme: light;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Theme change should feel deliberate, not jarring. */
+body,
+body * {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  body,
+  body * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ------- focus, scrollbars, selection ------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.scrollbar-soft {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+.scrollbar-soft::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.scrollbar-soft::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+.scrollbar-soft::-webkit-scrollbar-track {
+  background: transparent;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ------- reusable surface helpers ------- */
+.card-shadow {
+  box-shadow: 0 1px 2px hsl(var(--shadow-color) / 0.1),
+    0 6px 20px -8px hsl(var(--shadow-color) / 0.18);
+}
+.card-shadow-lg {
+  box-shadow: 0 2px 4px hsl(var(--shadow-color) / 0.1),
+    0 18px 40px -16px hsl(var(--shadow-color) / 0.3);
+}
+
+/* ============================================================
+   Keyframes — small, purposeful motion
+   ============================================================ */
+@keyframes fomi-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes fomi-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fomi-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fomi-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fomi-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-fade-up {
+  animation: fomi-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-scale-in {
+  animation: fomi-scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-float {
+  animation: fomi-float 4s ease-in-out infinite;
+}
+
+/* Skeleton shimmer used by loading placeholders */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-sunken);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--shadow-color) / 0.08),
+    transparent
+  );
+  animation: fomi-shimmer 1.6s infinite;
+}
